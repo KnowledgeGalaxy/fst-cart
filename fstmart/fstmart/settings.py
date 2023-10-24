@@ -134,5 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
       'https://fstmart.up.railway.app',
-        'https://fstmart.up.railway.app/'  # Add the domains you want to allow
+        
 ]
