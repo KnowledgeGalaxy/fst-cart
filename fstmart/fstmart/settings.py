@@ -83,9 +83,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': '5LPTVZAr90dVlzG3hWD7',
-        'HOST': 'containers-us-west-98.railway.app',
-        'PORT': '7563',
+        'PASSWORD': '4FE3c1ccg1C16b16-GagCFfG5AF54*6f',
+        'HOST': 'viaduct.proxy.rlwy.net',
+        'PORT': '28981',
     }
 }
 
@@ -133,6 +133,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-      'https://fstmart.up.railway.app',
+    'https://fstmart.up.railway.app',
         
 ]
