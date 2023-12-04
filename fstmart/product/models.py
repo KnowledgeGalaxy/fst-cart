@@ -68,11 +68,7 @@ class ConfirmOrder(models.Model):
     def __str__(self):
         return f"Order {self.pk} - {self.customer}"
 
-# models.py
-# models.py
-# models.py
-# models.py
-# models.py
+
 from django.db import models
 
 
