@@ -135,5 +135,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://fstmart.up.railway.app',
     'https://fstmart.in',
+    "*"
         
 ]
