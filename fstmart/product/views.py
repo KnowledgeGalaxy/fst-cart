@@ -200,6 +200,17 @@ class AddressDetail(APIView):
         address.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class AddressDetailById(APIView):
+    def get_object_by_id(self, address_id):
+        try:
+            return Address.objects.get(id=address_id)
+        except Address.DoesNotExist:
+            raise Http404
+
+    def get(self, request, address_id, format=None):
+        address = self.get_object_by_id(address_id)
+        serializer = AddressSerializer(address)
+        return Response(serializer.data)
 
 # views.py
 # views.py
@@ -243,8 +254,6 @@ from rest_framework import status
 from .models import  OrderedItems, ConfirmOrder
 from .serializers import OrderedItemsSerializer, ConfirmOrderSerializer
 
-
-
 class OrderedItemsAPIView(APIView):
     def get(self, request):
         ordered_items = OrderedItems.objects.all()
@@ -252,10 +261,51 @@ class OrderedItemsAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = OrderedItemsSerializer(data=request.data, many=True)  # Use many=True here
+        serializer = OrderedItemsSerializer(data=request.data, many=True)
+        return self.handle_serializer(serializer)
+
+    def put(self, request):
+        ordered_items = OrderedItems.objects.all()
+        serializer = OrderedItemsSerializer(ordered_items, data=request.data, many=True)
+        return self.handle_serializer(serializer)
+
+    def delete(self, request):
+        ordered_items = OrderedItems.objects.all()
+        ordered_items.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def handle_serializer(self, serializer):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OrderedItemsDetailAPIView(APIView):
+    def get_object(self, item_id):
+        try:
+            return OrderedItems.objects.get(id=item_id)
+        except OrderedItems.DoesNotExist:
+            raise Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, item_id):
+        ordered_item = self.get_object(item_id)
+        serializer = OrderedItemsSerializer(ordered_item)
+        return Response(serializer.data)
+
+    def put(self, request, item_id):
+        ordered_item = self.get_object(item_id)
+        serializer = OrderedItemsSerializer(ordered_item, data=request.data)
+        return self.handle_serializer(serializer)
+
+    def delete(self, request, item_id):
+        ordered_item = self.get_object(item_id)
+        ordered_item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def handle_serializer(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ConfirmOrderAPIView(APIView):
