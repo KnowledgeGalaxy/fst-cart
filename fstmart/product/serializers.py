@@ -107,3 +107,23 @@ class BillSerializer(serializers.ModelSerializer):
         model = BillDetails
         fields = ['id', 'ordered_items','customer_id', 'total_cost', 'created_at']
         
+# serializers.py
+
+from rest_framework import serializers
+from .models import ProductFeedback, WebsiteFeedback
+
+class ProductFeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductFeedback
+        fields = ['product_id', 'feedback_text', 'rating']
+
+    # Override create method to handle product_id
+    def create(self, validated_data):
+        product_id = validated_data.pop('product_id')
+        feedback = ProductFeedback.objects.create(product_id_id=product_id, **validated_data)
+        return feedback
+
+class WebsiteFeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WebsiteFeedback
+        fields = '__all__'

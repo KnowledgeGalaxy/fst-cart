@@ -390,3 +390,36 @@ class BillAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# views.py
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import ProductFeedback, WebsiteFeedback
+from .serializers import ProductFeedbackSerializer, WebsiteFeedbackSerializer
+
+class ProductFeedbackAPIView(APIView):
+    def get(self, request, product_id):
+        feedback = ProductFeedback.objects.filter(product_id=product_id)
+        serializer = ProductFeedbackSerializer(feedback, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, product_id):
+        serializer = ProductFeedbackSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(product_id=product_id)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class WebsiteFeedbackAPIView(APIView):
+    def get(self, request):
+        feedback = WebsiteFeedback.objects.all()
+        serializer = WebsiteFeedbackSerializer(feedback, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = WebsiteFeedbackSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -83,7 +83,26 @@ class BillDetails(models.Model):
     def __str__(self):
         return f"BillDetails {self.pk}"
 
-  
+
+
+# models.py
+
+from django.db import models
+class ProductFeedback(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    feedback_text = models.TextField(blank=True, null=True)
+    rating = models.IntegerField(default=3)
+
+    def __str__(self):
+        return f"{self.product.name} - Rating: {self.rating}"
+
+class WebsiteFeedback(models.Model):
+    feedback_text = models.TextField(blank=True)
+    rating = models.IntegerField(default=3)
+
+    def __str__(self):
+        return f"Website Feedback - {self.id}"
+
 
 
 
