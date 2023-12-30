@@ -126,4 +126,9 @@ class ProductFeedbackSerializer(serializers.ModelSerializer):
 class WebsiteFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebsiteFeedback
-        fields = '__all__'
+        fields = ['id', 'feedback_text', 'rating', 'customer_id']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['customer_id'] = instance.customer_id.customer_id
+        return representation
