@@ -88,11 +88,14 @@ class BillDetails(models.Model):
 # models.py
 
 from django.db import models
+from django.utils import timezone
+
 class ProductFeedback(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     feedback_text = models.TextField(blank=True, null=True)
     rating = models.IntegerField(default=3)
-    customer_id=models.ForeignKey(Customer, on_delete=models.CASCADE, default="8585858585" )
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default="8585858585")
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.product.name} - Rating: {self.rating}"
@@ -100,7 +103,8 @@ class ProductFeedback(models.Model):
 class WebsiteFeedback(models.Model):
     feedback_text = models.TextField(blank=True)
     rating = models.IntegerField(default=3)
-    customer_id=models.ForeignKey(Customer,on_delete=models.CASCADE, default="8585858585")
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default="8585858585")
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"Website Feedback - {self.id}"
