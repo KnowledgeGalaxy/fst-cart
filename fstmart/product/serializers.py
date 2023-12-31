@@ -115,13 +115,13 @@ from .models import ProductFeedback, WebsiteFeedback
 class ProductFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductFeedback
-        fields = ['product_id', 'feedback_text', 'rating']
+        fields = ['id', 'product_id', 'feedback_text', 'rating', 'customer_id', 'created_at']
 
-    # Override create method to handle product_id
-    def create(self, validated_data):
-        product_id = validated_data.pop('product_id')
-        feedback = ProductFeedback.objects.create(product_id_id=product_id, **validated_data)
-        return feedback
+    # Override to_representation method to include customer_id in the response
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['customer_id'] = instance.customer_id.customer_id
+        return representation
 
 class WebsiteFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
