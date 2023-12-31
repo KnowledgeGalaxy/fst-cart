@@ -112,16 +112,22 @@ class BillSerializer(serializers.ModelSerializer):
 from rest_framework import serializers
 from .models import ProductFeedback, WebsiteFeedback
 
+
+from rest_framework import serializers
+from .models import ProductFeedback
+
 class ProductFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductFeedback
-        fields = ['id', 'product_id', 'feedback_text', 'rating', 'customer_id', 'created_at']
+        fields = ['id','product_id', 'feedback_text', 'rating', 'customer_id']
 
-    # Override to_representation method to include customer_id in the response
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['customer_id'] = instance.customer_id.customer_id
-        return representation
+    def create(self, validated_data):
+        customer_id = validated_data.pop('customer_id')
+        product_id = validated_data.pop('product_id')
+        product_instance = Product.objects.get(id=product_id)
+        product_feedback = ProductFeedback.objects.create(customer_id=customer_id, product_id=product_instance, **validated_data)
+        return product_feedback
+
 
 class WebsiteFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
